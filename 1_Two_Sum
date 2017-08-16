@@ -1,0 +1,66 @@
+//q1: is the array sorted? 
+//q2: are the elements all positives? + & - ?
+//q3: when there's no results, should return null or empty?
+
+public class Solution {
+
+    //28ms O(n^2)
+    public int[] twoSum0(int[] nums, int target) {
+        boolean found = false;
+        int[] results = new int[2];
+        for (int i = 0; i < nums.length; i++) {
+            int other = target - nums[i];
+            for (int j = i + 1; j < nums.length; j++) {
+                if (nums[j] == other) {
+                    results[0] = i;
+                    results[1] = j;
+                    found = true;
+                    break;
+                }
+            }
+            if (found) break;
+        }
+        return results;
+    }
+    
+    //86ms O(n^2)
+    public int[] twoSum1(int[] nums, int target) {
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                if (nums[i] + nums[j] == target) {
+                    return new int[]{i, j};
+                }
+            }
+        }
+        return null;
+    }
+    
+    //Hash table 10ms O(n)
+    //Special case, keys are not unique, e.g. {3, 3} 6 -> {0, 1}
+    public int[] twoSum2(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for (int i = 0; i < nums.length; i++) {
+            map.put(nums[i], i);
+        }
+        for (int i = 0; i < nums.length; i++) {
+            int other = target - nums[i];
+            // Don't forget to check index1 != index2
+            if (map.containsKey(other) && map.get(other) != i) {
+                return new int[]{i, map.get(other)};
+            }
+        }
+        return null;
+    }
+    
+    //One pass Hash table 9ms O(n)
+    public int[] twoSum2(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for (int i = 0; i < nums.length; i++) {
+            int other = target - nums[i];
+            if (map.containsKey(other)) return new int[]{i, map.get(other)};
+            map.put(nums[i], i);
+        }
+        return null;
+    }
+    
+}
