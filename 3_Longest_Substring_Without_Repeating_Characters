@@ -22,7 +22,7 @@ class Solution {
         return length;
     }
     
-    //Don't rewrite the hashset, simply remove the first element
+    //Don't rewrite the hashset, slide it
     //81ms O(n)
     public int lengthOfLongestSubstring1(String s) {
         Set<Character> res = new HashSet<Character>();
@@ -42,4 +42,40 @@ class Solution {
         return length;
     }
     
+    //record index using map
+    //54ms O(n)
+    public int lengthOfLongestSubstring1(String s) {
+        Map<Character, Integer> map = new HashMap<Character, Integer>();
+        int length = 0;
+        int i = 0;
+        int j = 0;
+        while (i < s.length() && j < s.length()) {
+            Character thisc = s.charAt(j);
+            if (map.containsKey(thisc)) {
+                //Don't assign new i which is smaller than old i 
+                i = Math.max(i, map.get(thisc) + 1);
+            }
+            length = Math.max(length, (j - i + 1));
+            map.put(thisc, j);
+            j++;
+        }
+        return length;
+    }
+    
+    //record index with the help of array
+    //42ms O(n)
+    public int lengthOfLongestSubstring1(String s) {
+        int[] index = new int[128];
+        int length = 0;
+        int i = 0;
+        int j = 0;
+        while (i < s.length() && j < s.length()) {
+            Character thisc = s.charAt(j);
+            // To deal with i=0 situation, index[x] is not s.indexOf(c), but s.indexOf(c) + 1
+            i = Math.max(i, index[thisc]);
+            length = Math.max(length, (j - i + 1));
+            index[thisc] = ++j; 
+        }
+        return length;
+    }
 }
