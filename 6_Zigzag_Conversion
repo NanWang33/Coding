@@ -1,0 +1,69 @@
+class Solution {
+
+    //84ms
+    public String convert(String s, int numRows) {
+       if (numRows == 1 || s.length() <= numRows) return s;
+        
+        StringBuilder sb = new StringBuilder();
+        if (numRows == 2) {
+            for ( int i = 0; i * 2 < s.length(); i++) {
+                sb.append(s.charAt(i * 2));
+            }
+            for ( int i = 0; i * 2 + 1 < s.length(); i++) {
+                sb.append(s.charAt(i * 2 + 1));
+            }
+            return sb.toString();
+        }
+        
+        List<ArrayList<String>> verticles = new ArrayList<ArrayList<String>>();
+        List<ArrayList<String>> tilts = new ArrayList<ArrayList<String>>();
+        
+        int k = numRows + numRows - 2;
+        ArrayList<String> verticle = null;
+        ArrayList<String> tilt = null;
+        for ( int i = 0; i < s.length(); i++) {
+            if (i % k == 0) {
+                if (verticle != null) { verticles.add(verticle); }
+                verticle = new ArrayList<String>();
+                verticle.add("" + s.charAt(i));
+            } else if (i % k < numRows) {
+                verticle.add("" + s.charAt(i));
+            } else if (i % k == numRows) {
+                if (tilt != null){
+                    tilt.add("");
+                    tilts.add(tilt);
+                }
+                tilt = new ArrayList<String>();
+                tilt.add("");
+                tilt.add("" + s.charAt(i));
+            } else {
+                tilt.add("" + s.charAt(i));
+            }
+        }
+        
+        for (int i = 0; i < numRows; i++) {
+            if (verticle.size() < i + 1) verticle.add("");
+            if (tilt.size() < i + 1) tilt.add("");
+        }
+        verticles.add(verticle);
+        tilts.add(tilt);
+        
+        if (verticles.size() > tilts.size()) {
+            ArrayList<String> empty = new ArrayList<String>();
+            for (int i = 0; i < numRows; i++) {
+                empty.add("");
+            }
+            tilts.add(empty);
+        }
+        
+        
+        
+        for (int j = 0; j < numRows; j++) {
+            for (int l = 0; l < verticles.size(); l++) {
+                sb.append(verticles.get(l).get(j));
+                sb.append(tilts.get(l).get(numRows - j - 1));
+            }
+        }
+        return sb.toString();
+    }
+}
