@@ -1,0 +1,19 @@
+class Solution {
+    //9ms from two side to middle
+    public int maxArea(int[] height) {
+        int max = 0;
+        
+        int i = 0;
+        int j = height.length - 1;
+        
+        while (j > i) {
+            int l1 = height[i];
+            int l2 = height[j];
+            int l = Math.min(l1, l2);
+            if (l * (j - i) > max) max = l * (j - i);
+            if (l1 == l) i++;
+            else j--;
+        }
+        return max;
+    }
+}
