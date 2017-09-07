@@ -1,4 +1,6 @@
 class Solution {
+
+    //41ms
     public int myAtoi(String str) {
         if(str == null || str.trim().isEmpty()) return 0;
         
