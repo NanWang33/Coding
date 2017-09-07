@@ -1,0 +1,30 @@
+class Solution {
+
+    //Wrong! Cannot deal with 0s in the middel
+    public boolean isPalindrome(int x) {
+        if (x < 0) return false;
+        
+        while(x > 9) {
+            int s1 = x;
+            int count = 0;
+            while (s1 > 9) {s1 = s1 / 10; count++; }
+            int s2 = x % 10;
+            if (s1 != s2) return false;
+            
+            x = (x - s1 * (int)Math.pow(10, count) - s2) / 10;
+        }
+        return true;
+    }
+    
+    //197ms half reverse
+    public boolean isPalindrome1(int x) {
+        if (x < 0 || (x % 10 == 0 && x != 0)) return false;
+        
+        int reverse = 0;
+        while(x > reverse) {
+            reverse = reverse * 10 + x % 10;
+            x = x / 10;
+        }
+        return reverse == x || reverse / 10 == x;
+    }
+}
