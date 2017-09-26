@@ -1,0 +1,29 @@
+class Solution {
+
+    //DFS 3ms
+    public List<String> letterCombinations(String digits) {
+        String[] dict = {" ","", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        List<String> res = new ArrayList<String>();
+        StringBuilder sb = new StringBuilder();
+        
+        if (digits == null || digits.isEmpty()) return res;
+        
+        dfs(dict, digits, res, sb, 0);
+        
+        return res;
+    }
+    
+    private void dfs(String[] dict, String digits, List<String> res, StringBuilder sb, int deep) {
+        if (deep == digits.length()) {
+            res.add(sb.toString());
+            return;
+        } else {
+            String dictContent = dict[Integer.parseInt("" + digits.charAt(deep))];
+            for (int i = 0; i < dictContent.length(); i++) {
+                sb.append(dictContent.charAt(i));
+                dfs(dict, digits, res, sb, deep + 1);
+                sb.deleteCharAt(sb.length() - 1);
+            }
+        }
+    }
+}
