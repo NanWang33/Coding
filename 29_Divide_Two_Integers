@@ -1,0 +1,59 @@
+class Solution {
+
+    //Substraction, time out
+    public int divide(int dividend, int divisor) {
+        if (divisor == 0) return Integer.MAX_VALUE;
+        if (dividend == Integer.MIN_VALUE) return Integer.MAX_VALUE;
+        
+        boolean neg = false;
+        if (dividend < 0) {
+            dividend = - dividend;
+            if (divisor < 0) { divisor = - divisor; }
+            else neg = true;
+        } else {
+            if (divisor < 0) {
+                divisor = - divisor; neg = true;
+            }
+        }
+        
+        int count = 0;
+        while (dividend >= divisor) {
+            dividend = dividend - divisor;
+            count++;
+        }
+        
+        return neg ? -count : count;
+    }
+    
+    //34ms <<
+    public int divide1(int dividend, int divisor) {
+        if (divisor == 0) return Integer.MAX_VALUE;
+        if (dividend == Integer.MIN_VALUE && divisor==-1) return Integer.MAX_VALUE;
+        
+        long dvd = Math.abs((long) dividend);
+        long dvs = Math.abs((long) divisor);
+        boolean neg = false;
+        if ((dividend < 0 && divisor > 0) || (dividend >= 0 && divisor < 0)) {
+            neg = true;
+        }
+        
+        int step = 0;
+        long dvsOrg = dvs;
+        while (dvd >= dvs) {
+            dvs = dvs << 1;
+            step++;
+        }
+        
+        int res = 0;
+        
+        while (dvd >= dvsOrg) {
+            if (dvd >= dvs) {
+                dvd = dvd - dvs;
+                res += 1 << step;
+            }
+            dvs = dvs >> 1;
+            step--;
+        }
+        return neg ? -res : res;
+    }
+}
