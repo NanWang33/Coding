@@ -1,0 +1,69 @@
+class Solution {
+
+    //16ms, simple search
+    public int search(int[] nums, int target) {
+        if (nums == null || nums.length == 0) return -1;
+        
+        int first = nums[0];
+        if (target == first) return 0;
+        else if (target > first) {
+            int index = 1;
+            while (index < nums.length && nums[index - 1] < nums[index]) {
+                if (target == nums[index]) return index;
+                index++;
+            }
+            return -1;
+        } else {
+            int index = nums.length - 1;
+            while (index > 0 && nums[index - 1] < nums[index]) {
+                if (target == nums[index]) return index;
+                index--;
+            }
+            if (index > 0 && nums[index] == target) return index;
+            else return -1;
+        }
+    }
+    
+    //17ms, binary search
+    public int search1(int[] nums, int target) {
+        return searchHelper(nums, 0, nums.length - 1, target);
+    }
+    
+    private int searchHelper(int[] nums, int s, int e, int target) {
+        if (s > e) return -1;
+        if (s == e) {
+            if (nums[s] == target) return s;
+            else return -1;
+        } 
+        
+        int mid = (s + e)/2;
+        int midValue = nums[mid];
+        if (target == nums[s]) return s;
+        if (target == midValue) return mid;
+        
+        if (midValue >= nums[s]) { //Need to deal with "="
+            if (target > nums[s] && target < midValue) return searchHelper(nums, s, mid, target);
+            else return searchHelper(nums, mid + 1, e, target);
+        } else {
+            if (target > midValue && target < nums[s]) return searchHelper(nums, mid + 1, e, target);
+            else return searchHelper(nums, s, mid, target);
+        }
+    }
+    
+    //15ms, binary search simplify
+    public int search(int[] nums, int target) {
+        int l = 0, r = nums.length - 1;    
+        while(l<=r) {    
+            int m = (l+r)/2;    
+            if(nums[m] == target) return m;    
+            if(nums[m]>= nums[l]) {    
+                if(nums[l]<=target && target< nums[m]) r=m-1;    
+                else l = m+1;      
+            } else {    
+                if(nums[m]< target && target<=nums[r]) l = m+1;    
+                else r = m-1;   
+            }        
+        }    
+        return -1;
+    }
+}
