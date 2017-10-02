@@ -22,6 +22,8 @@ class Solution {
                 if (!list1.get(i).add(c)) return false;
                 if (!list2.get(j).add(c)) return false;
                 if (!list3.get(getIndex(i, j)).add(c)) return false;
+                //Can be simplified to:
+                //if (!list3.get(i / 3 + j / 3 * 3).add(c)) return false;
             }
         }
         return true;
