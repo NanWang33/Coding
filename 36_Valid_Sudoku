@@ -1,0 +1,45 @@
+class Solution {
+
+    //34ms, hash table for each row/column/block
+    public boolean isValidSudoku(char[][] board) {
+        if (board == null || board.length != 9) return false;
+        List<Set<Character>> list1 = new ArrayList<Set<Character>>();
+        List<Set<Character>> list2 = new ArrayList<Set<Character>>();
+        List<Set<Character>> list3 = new ArrayList<Set<Character>>();
+        
+        for(int i = 0; i < 9; i++) {
+            Set<Character> set1 = new HashSet<Character>();
+            list1.add(set1);
+            Set<Character> set2 = new HashSet<Character>();
+            list2.add(set2);
+            Set<Character> set3 = new HashSet<Character>();
+            list3.add(set3);
+        }
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                char c = board[i][j];
+                if (c == '.') continue;
+                if (!list1.get(i).add(c)) return false;
+                if (!list2.get(j).add(c)) return false;
+                if (!list3.get(getIndex(i, j)).add(c)) return false;
+            }
+        }
+        return true;
+    }
+    
+    private int getIndex(int i, int j) {
+        if (i >=0 && i < 3) {
+            if (j >= 0 && j < 3) return 0;
+            if (j >= 3 && j < 6) return 1;
+            return 2;
+        }else if (i >=3 && i < 6) {
+            if (j >= 0 && j < 3) return 3;
+            if (j >= 3 && j < 6) return 4;
+            return 5;
+        } else {
+            if (j >= 0 && j < 3) return 6;
+            if (j >= 3 && j < 6) return 7;
+            return 8;
+        }
+    }
+}
