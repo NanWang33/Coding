@@ -39,7 +39,7 @@ class Solution {
     }
     
     //29ms, simplify the carry process
-    public String multiply(String num1, String num2) {
+    public String multiply1(String num1, String num2) {
         if (num1 == null || num2 == null) return "";
         if (num1.equals("0") || num2.equals("0")) return "0";
         
