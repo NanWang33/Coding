@@ -44,7 +44,7 @@ class Solution {
             if (visited[i] == 0) {
                 one.add(nums[i]);
                 visited[i] = 1;
-                dfs(nums, one, res, depth + 1, visited);
+                dfs1(nums, one, res, depth + 1, visited);
                 visited[i] = 0;
                 one.remove(one.size() - 1);
             }
