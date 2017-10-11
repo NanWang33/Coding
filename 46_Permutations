@@ -31,7 +31,7 @@ class Solution {
         List<List<Integer>> res = new ArrayList<List<Integer>>();
         List<Integer> one = new ArrayList<Integer>();
         int[] visited = new int[nums.length];
-        dfs(nums, one, res, 0, visited);
+        dfs1(nums, one, res, 0, visited);
         return res;
     }
     
