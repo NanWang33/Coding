@@ -1,0 +1,30 @@
+class Solution {
+
+    //7ms, dfs
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        List<Integer> one = new ArrayList<Integer>();
+        int[] visited = new int[nums.length];
+        Arrays.sort(nums);
+        dfs(nums, one, res, 0, visited);
+        return res;
+    }
+    
+    private void dfs(int[] nums, List<Integer> one, List<List<Integer>> res, int depth, int[] visited) {
+        if (depth == nums.length) {
+            res.add(new ArrayList<Integer>(one));
+            return;
+        } 
+        for (int i = 0; i < nums.length; i++) {
+            //if the num before this num is equal to this, only use this num when the previous one already visited
+            if (i > 0 && nums[i - 1] == nums[i] && visited[i - 1] == 0) continue;
+            if (visited[i] == 0) {
+                one.add(nums[i]);
+                visited[i] = 1;
+                dfs(nums, one, res, depth + 1, visited);
+                visited[i] = 0;
+                one.remove(one.size() - 1);
+            }
+        }
+    }
+}
