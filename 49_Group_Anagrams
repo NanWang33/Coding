@@ -1,0 +1,40 @@
+class Solution {
+
+    //Sort 27ms
+    public List<List<String>> groupAnagrams(String[] strs) {
+        HashMap<String, List<String>> map = new HashMap<String, List<String>>();
+        for (String s : strs) {
+            char[] c = s.toCharArray();
+            Arrays.sort(c);
+            List<String> list = map.get(new String(c));
+            if (list == null) {
+                list = new ArrayList<String>();
+            }
+            list.add(s);
+            map.put(new String(c), list);
+        }
+        return new ArrayList<List<String>>(map.values());
+    }
+    
+    //26 letter count mapping, 30ms
+    public List<List<String>> groupAnagrams(String[] strs) {
+        HashMap<String, List<String>> map = new HashMap<String, List<String>>();
+        for (String s : strs) {
+            int[] count = new int[26];
+            for (char c : s.toCharArray()) {
+                count[c - 'a']++;
+            }
+            StringBuilder sb = new StringBuilder();
+            for (int i : count) {
+                sb.append(i);
+            }
+            List<String> list = map.get(sb.toString());
+            if (list == null) {
+                list = new ArrayList<String>();
+            }
+            list.add(s);
+            map.put(sb.toString(), list);
+        }
+        return new ArrayList<List<String>>(map.values());
+    }
+}
