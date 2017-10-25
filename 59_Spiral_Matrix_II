@@ -1,0 +1,36 @@
+class Solution {
+
+    //4ms, similar to 54. Spiral Matrix
+    //use dr = {0, 1, 0, -1}; dc = {1, 0, -1, 0}; to turn
+    public int[][] generateMatrix(int n) {
+        if (n <= 0) return new int[0][0];
+        
+        int[][] result = new int[n][n];
+        int[] dr = {0, 1, 0, -1};
+        int[] dc = {1, 0, -1, 0};
+        int r = 0;
+        int c = 0;
+        int nr = 0;
+        int nc = 0;
+        
+        int index = 1;
+        int di = 0;
+        while (index <= n * n) {
+            result[r][c] = index;
+            
+            nr = r + dr[di];
+            nc = c + dc[di];
+            
+            if (nr < n && nr >= 0 && nc < n && nc >= 0 && result[nr][nc] == 0) {
+                r = nr;
+                c = nc;
+            } else {
+                di = (di + 1) % 4;
+                r += dr[di];
+                c += dc[di];
+            }
+            index++;
+        }
+        return result;
+    }
+}
