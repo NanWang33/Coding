@@ -1,0 +1,35 @@
+import javafx.util.Pair;
+class TimeMap {
+
+    private Map<String, List<Pair<Integer, String>>> map = new HashMap<String, List<Pair<Integer, String>>>();
+    
+    /** Initialize your data structure here. */
+    public TimeMap() {
+        
+    }
+    
+    public void set(String key, String value, int timestamp) {
+        List<Pair<Integer, String>> valuelist = map.get(key);
+        if (valuelist == null) {
+            valuelist = new ArrayList<Pair<Integer, String>>();
+        }
+        valuelist.add(new Pair(timestamp, value));
+        map.put(key, valuelist);
+    }
+    
+    public String get(String key, int timestamp) {
+        List<Pair<Integer, String>> valuelist = map.get(key);
+        if (valuelist == null) return "";
+        int i = Collections.binarySearch(valuelist, new Pair<Integer, String>(timestamp, ""), (a,b) -> Integer.compare(a.getKey(), b.getKey()));
+        if (i >= 0) return valuelist.get(i).getValue();
+        else if (i == -1) return "";
+        else return valuelist.get(-i-2).getValue();
+    }
+}
+
+/**
+ * Your TimeMap object will be instantiated and called as such:
+ * TimeMap obj = new TimeMap();
+ * obj.set(key,value,timestamp);
+ * String param_2 = obj.get(key,timestamp);
+ */
