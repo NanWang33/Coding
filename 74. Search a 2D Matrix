@@ -1,0 +1,37 @@
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return false;
+        int[] heads = new int[matrix.length];
+        //copy first integer of each row to an array
+        int index = 0;
+        for (int[] line : matrix) {
+            heads[index] = line[0]; // matrix can be empty
+            index++;
+        }
+        
+        //binary search on heads first
+        int l = 0;
+        int r = heads.length - 1;
+        while (l <= r) {
+            int m = l + (r - l) / 2;
+            if (heads[m] >= target) r = m - 1;
+            else l = m + 1;
+        }
+        //Don't forget l == heads.length
+        if (l < heads.length && heads[l] == target) return true;
+        if (l == 0) return false;
+        
+        //binary search on detected row
+        int[] row = matrix[l - 1];
+        l = 0;
+        r = row.length - 1;
+        while (l <= r) {
+            int m = l + (r - l) / 2;
+            if (row[m] >= target) r = m - 1;
+            else l = m + 1;
+        }
+        //Don't forget l == row.length
+        if (l == row.length) return false;
+        return row[l] == target;
+    }
+}
