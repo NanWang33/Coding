@@ -1,0 +1,29 @@
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int row = triangle.size();
+        int[] res = new int[triangle.get(row-1).size()];
+        int[] preRes = new int[triangle.get(row-1).size()];
+        
+        for (int i = 0; i <row; i++) {
+            List<Integer> thisRow = triangle.get(i);
+            for (int j = 0; j < thisRow.size(); j++){
+                if (j == 0) 
+                    res[j] = preRes[j] + thisRow.get(j);
+                else if (j == thisRow.size()-1)
+                    res[j] = preRes[j-1] + thisRow.get(j);
+                else {
+                    res[j] = Math.min(preRes[j-1], preRes[j]) + thisRow.get(j);
+                }
+            }
+            for (int j = 0; j < thisRow.size(); j++){
+                preRes[j] = res[j];            
+            }
+        }
+        
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < res.length; i++) {
+            if (res[i] < min) min = res[i];
+        }
+        return min;
+    }
+}
