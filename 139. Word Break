@@ -1,0 +1,22 @@
+class Solution {
+        public boolean wordBreak(String s, List<String> wordDict) {
+            int maxLen = 0;
+            for (String word : wordDict) {
+                if (word.length() > maxLen) maxLen = word.length();
+            }
+            
+            boolean[] dp = new boolean[s.length()];
+            dp[0] = wordDict.contains(s.substring(0,1));
+            for (int i = 1 ; i < s.length(); i++) {
+                for (int j = Math.max(-1, i-maxLen); j < i; j++) {    
+                    String end = s.substring(j+1, i+1);
+                    if (wordDict.contains(end)) {
+                        if (j < 0) dp[i] = true;
+                        else dp[i] = dp[j];
+                    }
+                    if (dp[i] == true) break;
+                }
+            }
+            return dp[s.length() - 1];
+        }
+}
