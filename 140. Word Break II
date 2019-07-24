@@ -1,0 +1,76 @@
+class Solution {
+        //Time Limit Exceeded
+//         public List<String> wordBreak(String s, List<String> wordDict) {
+//             List<List<String>> dp = new ArrayList<List<String>>();
+//             int maxLen = 0;
+//             HashSet<String> dict = new HashSet<String>();
+//             for (String w :wordDict) { 
+//                 dict.add(w);
+//                 if (w.length() > maxLen) maxLen = w.length();
+//             }
+            
+//             //deal with i == 0
+//             dp.add(0, new ArrayList<String>());
+//             if (dict.contains(s.substring(0,1))) {
+//                 List<String> first = dp.get(0);
+//                 first.add(s.substring(0,1));
+//                 dp.add(0, first);
+//             }
+            
+//             for (int i = 1; i < s.length(); i++) {
+//                 List<String> current = new ArrayList<String>();
+//                 dp.add(i, current);
+//                 for (int j = Math.max(-1, i - maxLen); j < i; j++) {
+//                     List<String> previous = new ArrayList<String>();
+//                     if (j >= 0) {
+//                         previous = dp.get(j);
+//                     }
+                    
+//                     current = dp.get(i);
+                    
+//                     if (dict.contains(s.substring(j+1,i+1))) {
+//                         String newTerm = s.substring(j+1,i+1);
+//                         for (int k = 0; k < previous.size(); k++) {
+//                             current.add(previous.get(k) + " " + newTerm);
+//                         }
+//                         if (j < 0) {
+//                             current.add(newTerm);
+//                         }
+//                         dp.remove(i);
+//                         dp.add(i, current);
+//                     }
+//                 }
+//             }
+//             return dp.get(s.length()-1);
+//         }
+    private Map<String, List<String>> mem = new HashMap<String, List<String>>();
+    
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        Set<String> dict = new HashSet<String>(wordDict);
+        int maxLen = 0;
+        for (String w :wordDict) { 
+            if (w.length() > maxLen) maxLen = w.length();
+        }
+        return wordBreakHelper(s, dict, maxLen);
+    }
+    
+    public List<String> wordBreakHelper(String s, Set<String> dict, int maxLen) {
+        if (mem.get(s) != null) return mem.get(s);
+        
+        List<String> result = new ArrayList<String>();
+        
+        if (dict.contains(s)) result.add(s);
+        
+        for (int i = Math.max(0, s.length() - maxLen); i < s.length(); i++) {
+            String left = s.substring(0, i);
+            String right = s.substring(i);
+            if (!dict.contains(right)) continue;
+            List<String> previous = wordBreakHelper(left, dict, maxLen);
+            for (String pre : previous) {
+                result.add(pre + " " + right);
+            }
+        }
+        mem.put(s, result);
+        return result;
+    }
+}
