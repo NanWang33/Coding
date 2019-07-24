@@ -1,44 +1,29 @@
 class Solution {
-
-    //Kadane's algorithm 16ms O(n)
     public int maxSubArray(int[] nums) {
-        int max_ending_here = nums[0];
-        int max_so_far = nums[0];
-        for (int i = 1; i < nums.length; i++) {
-            max_ending_here = Math.max(nums[i], max_ending_here + nums[i]);
-            max_so_far = Math.max(max_so_far, max_ending_here);
-        }
-        
-        return max_so_far;
+        return divide(nums, 0, nums.length - 1);
     }
     
-    //divide and conquer, 18ms
-    public int maxSubArray1(int[] nums) {
+    private int divide(int[] nums, int l, int r) {
+        if (l > r) return Integer.MIN_VALUE;
+        if (l == r) return nums[l];
         
-        return divide(nums, 0, nums.length-1);
-    }
-    
-    private int divide(int[] nums, int i, int j) {
-        if (i == j) return nums[i];
-        if (i > j) return Integer.MIN_VALUE;
+        int m = l + (r - l) / 2;
+        int mid = nums[m];
+        int left = divide(nums, l, m - 1);
+        int right = divide(nums, m + 1, r);
         
-        int mid = (i + j) / 2;
-        int left = divide(nums, i, mid - 1);
-        int right = divide(nums, mid + 1, j);
-        
-        int max = nums[mid];
-        int sum = max;
-        for (int index = mid - 1; index >= i; index--) {
-            sum = sum + nums[index];
-            max = Math.max(max, sum);
+        int max = Integer.MIN_VALUE;
+        int cur = 0;
+        for (int i = m; i >= l; i--) {
+            cur = cur + nums[i];
+            max = Math.max(max, cur);
+        }
+        cur = max;
+        for (int i = m + 1; i <= r; i++) {
+            cur = cur + nums[i];
+            max = Math.max(max, cur);
         }
         
-        sum = max;
-        for (int index = mid + 1; index <= j; index++) {
-            sum = sum + nums[index];
-            max = Math.max(max, sum);
-        }
-        
-        return Math.max(max, Math.max(left, right));
+        return Math.max(Math.max(left, right), max);
     }
 }
