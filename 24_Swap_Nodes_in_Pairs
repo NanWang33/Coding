@@ -7,22 +7,21 @@
  * }
  */
 class Solution {
-
-    //5ms
     public ListNode swapPairs(ListNode head) {
-        ListNode res = new ListNode(0); //dump head;
-        res.next = head;
-        ListNode index = res;
-        ListNode i = head;
-        
-        while (i != null && i.next != null) {
-            ListNode tmp = i.next;
-            i.next = i.next.next;
-            tmp.next = i;
-            index.next = tmp;
-            index = index.next.next;
-            i = index.next;
+        ListNode dumpHead = new ListNode(0);
+        dumpHead.next = head;
+        ListNode previous = dumpHead;
+        ListNode index = head;
+        while(index != null && index.next != null) {
+            ListNode next = index.next;
+            ListNode nextnext = next.next;
+            previous.next = next;
+            next.next = index;
+            index.next = nextnext;
+            
+            previous = index;
+            index = nextnext;
         }
-        return res.next;
+        return dumpHead.next;
     }
 }
