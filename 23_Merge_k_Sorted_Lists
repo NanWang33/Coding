@@ -40,4 +40,65 @@ class Solution {
         }
         return res.next;
     }
+
+//    Find smallest in each column, recursive
+//    public ListNode mergeKLists(ListNode[] lists) {
+//         ListNode min = new ListNode(Integer.MAX_VALUE);
+//         for (ListNode one : lists) {
+//             if (one == null) continue;
+//             if (one.val < min.val) {
+//                 min = one;
+//             }
+//         }
+        
+//         //All null
+//         if (min.val == Integer.MAX_VALUE) return null;
+        
+//         ListNode[] newLists = new ListNode[lists.length];
+//         int index = 0;
+//         for (ListNode one : lists) {
+//             if (one == min) newLists[index] = one.next;
+//             else newLists[index] = one;
+//             index++;
+//         }
+//         min.next = mergeKLists(newLists);
+//         return min;
+//     }
+    
+
+    
+//Have to make ListNode comparable if want to use PriorityQueue
+//     public class ListNode implements Comparable{
+//         int val;
+//         ListNode next;
+//         ListNode(int x) { val = x; }
+        
+//         @Override
+//         public int compareTo(Object ob) {
+//             ListNode o = (ListNode) ob;
+//             return val - o.val;
+//         }
+//     }
+    
+//     public ListNode mergeKLists(ListNode[] lists) {
+//         ListNode res = new ListNode(0);
+//         ListNode index = res;
+//         PriorityQueue<ListNode> q = new PriorityQueue<ListNode>(); 
+        
+//         for (ListNode one : lists) {
+//             if (one != null) q.add(one);
+//         }
+        
+//         while (q.size() > 0) {
+//             ListNode node = q.poll();
+//             index.next = new ListNode(node.val);
+//             node = node.next;
+//             if (node != null) {
+//                 q.add(node);
+//             }
+//             index = index.next;
+//         }
+//         return res.next;
+//     }
+}
 }
