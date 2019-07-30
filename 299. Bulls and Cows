@@ -1,0 +1,47 @@
+class Solution {
+    // public String getHint(String secret, String guess) {
+    //     int k = secret.length();
+    //     int[][] s = new int[10][k];
+    //     int[][] g = new int[10][k];
+    //     for (int i = 0; i < k; i++) {
+    //         s[Integer.parseInt(secret.substring(i, i+1))][i] = 1;
+    //         g[Integer.parseInt(guess.substring(i, i+1))][i] = 1;
+    //     }
+    //     int bull = 0;
+    //     int cow = 0;
+    //     for (int i = 0; i < 10; i++) {
+    //         int[] ss = s[i];
+    //         int[] gg = g[i];
+    //         int count_s = 0;
+    //         int count_g = 0;
+    //         for (int j = 0; j < k; j++) {
+    //             if (ss[j] == 1) {
+    //                 if (gg[j] == 1) bull++;
+    //                 else count_s++;
+    //             } else if (gg[j] == 1) count_g++;
+    //         }
+    //         cow += Math.min(count_s, count_g);
+    //     }
+    //     return "" + bull + "A" + cow + "B";
+    // }
+    
+    public String getHint(String secret, String guess) {
+        int k = secret.length();
+        int[] nums = new int[10];
+        int bull = 0;
+        int cow = 0;
+        for (int i = 0; i < k; i++) {
+            int s = Integer.parseInt(secret.substring(i, i+1));
+            int g = Integer.parseInt(guess.substring(i, i+1));
+            if (s == g) bull++;
+            else {
+                if (nums[s] < 0) cow++;
+                if (nums[g] > 0) cow++;
+                nums[s]++;
+                nums[g]--;
+            }
+        }
+
+        return "" + bull + "A" + cow + "B";
+    }
+}
