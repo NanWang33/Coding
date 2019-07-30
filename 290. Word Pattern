@@ -1,0 +1,20 @@
+class Solution {
+    public boolean wordPattern(String pattern, String str) {
+        String[] tokens = str.split(" ");
+        char[] chars = pattern.toCharArray();
+        
+        if (tokens.length != chars.length) return false;
+        
+        HashMap<Character, String> map = new HashMap<Character, String>();
+        for (int i = 0; i < tokens.length; i++) {
+            String value = map.get(chars[i]);
+            if (value == null) {
+                if (map.containsValue(tokens[i])) return false;
+                map.put(chars[i], tokens[i]);
+            } else {
+                if (!value.equals(tokens[i])) return false;
+            }
+        }
+        return true;
+    }
+}
