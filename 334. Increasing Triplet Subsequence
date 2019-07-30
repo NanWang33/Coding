@@ -1,0 +1,19 @@
+class Solution {
+    public boolean increasingTriplet(int[] nums) {
+        int first = Integer.MAX_VALUE;
+        int pivot = Integer.MAX_VALUE;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] > pivot) return true;
+            if (nums[i] > nums[i-1]) {
+                if (first < nums[i-1]) {
+                    return true;
+                } else {
+                    pivot = nums[i];
+                    first = nums[i-1];
+                }
+                
+            }
+        }
+        return false;
+    }
+}
