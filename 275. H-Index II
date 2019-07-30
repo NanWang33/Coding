@@ -1,0 +1,14 @@
+class Solution {
+    public int hIndex(int[] citations) {
+        if (citations == null || citations.length == 0) return 0;
+        int l = 0;
+        int r = citations.length - 1;
+        while (l <= r) {
+            int m = l + (r-l)/2;
+            if (citations.length - m == citations[m]) return citations.length - m;
+            if (citations.length - m < citations[m]) r = m - 1;
+            else l = m + 1;
+        }
+        return citations.length - l;
+    }
+}
