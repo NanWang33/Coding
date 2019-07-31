@@ -31,4 +31,32 @@ class Solution {
         return pre;
 
     }
+    
+    //DP
+    public String countAndSay(int n) {
+        String[] dp = new String[n];
+        dp[0] = "1";
+        for (int i = 1; i < n; i++) {
+            StringBuilder sb = new StringBuilder();
+            String pre = dp[i-1];
+            char cur = pre.charAt(0);
+            int count = 1;
+            for (int j = 1; j < pre.length(); j++) {
+                if (cur == pre.charAt(j)){
+                    count++;
+                } else {
+                    //add cur/count into result
+                    sb.append(count);
+                    sb.append(cur);
+                    cur = pre.charAt(j);
+                    count = 1;
+                }
+            }
+            sb.append(count);
+            sb.append(cur);
+            dp[i] = sb.toString(); 
+        }
+        return dp[n-1];
+    }
+
 }
