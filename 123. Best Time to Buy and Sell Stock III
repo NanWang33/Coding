@@ -1,0 +1,22 @@
+class Solution {
+    public int maxProfit(int[] prices) {
+        if(prices == null || prices.length == 0) return 0;
+        
+        int max = 0;
+        for (int i = 1; i < prices.length; i++) {
+            max = Math.max(max, max(prices, 0, i-1) + max(prices, i, prices.length-1));
+        }
+        
+        return Math.max(max, max(prices, 0, prices.length -1));
+    }
+    
+    private int max(int[] prices, int s, int e) {
+        int min = Integer.MAX_VALUE;
+        int res = 0;
+        for(int i = s; i <= e; i++) {
+            min = Math.min(prices[i], min);
+            res = Math.max(res, prices[i] - min);
+        }
+        return res;
+    }
+}
