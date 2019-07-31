@@ -1,0 +1,21 @@
+class Solution {
+    public String convertToTitle(int n) {
+        StringBuilder sb = new StringBuilder();
+        Stack<Character> stack = new Stack<Character>();
+        while(n > 0) {
+            int newn = n / 26;
+            int remain = n % 26;
+            if (remain == 0) {
+                newn--;
+                stack.push('Z');
+            } else {
+                stack.push((char)('A' + remain - 1));
+            }
+            n = newn;
+        }
+        while(!stack.empty()) {
+            sb.append(stack.pop());
+        }
+        return sb.toString();
+    }
+}
