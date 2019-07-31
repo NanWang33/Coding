@@ -1,0 +1,65 @@
+class Solution {
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        List<String> line = new ArrayList<String>();
+        List<String> res = new ArrayList<String>();
+        int index = 0;
+        int len = 0;
+        while (index < words.length) {
+            int nextLen = len + words[index].length();
+            
+            if (nextLen + line.size() > maxWidth) {
+                res.add(processLine(maxWidth, line, len));
+                line = new ArrayList<String>();
+                len = 0;
+            }
+            line.add(words[index]);
+            len += words[index].length();
+            index++;
+        }
+        String last = "";
+        for (String token : line) {
+            last += token + " ";
+        }
+        if (last.length() >= maxWidth) last = last.substring(0, maxWidth);
+        else {
+            int idx = last.length();
+            while (idx != maxWidth) {
+                last += " ";
+                idx++;
+            }
+        }
+        res.add(last);
+        return res;
+    }
+    
+    private String processLine(int maxWidth, List<String> words, int len) {
+        if (words.size() == 1) {
+            String one = words.get(0);
+            int idx = len;
+            while (idx != maxWidth) {
+                one += " ";
+                idx++;
+            }
+            return one;
+        }
+        
+        int interval = words.size() - 1;
+        int less = (maxWidth - len ) / interval;
+        String blank = "";
+        while (less > 0) {
+            blank += " ";
+            less--;
+        }
+        int numMore = (maxWidth - len ) % interval;
+        StringBuilder sb = new StringBuilder();
+        for (String w : words) {
+            sb.append(w);
+            sb.append(blank);
+            if (numMore > 0) {
+                sb.append(" ");
+                numMore--;
+            }
+        }
+        return sb.toString().trim();
+    }
+}
