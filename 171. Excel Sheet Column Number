@@ -1,0 +1,23 @@
+class Solution {
+    public int titleToNumber(String s) {
+        if (s == null || s.isEmpty()) return 0;
+        
+        char[] chars = s.toCharArray();
+        int sum = 0;
+        for (int i = 0 ; i < chars.length; i++) {
+            int val = (chars[i] - 'A' + 1);
+            int time = 1;
+            for (int j = 0; j < chars.length - 1 - i; j++) {
+                time = time * 26;
+            }
+            sum += val * time;
+        }
+        return sum;
+    }
+    
+    public int titleToNumber(String s) {
+        if(s.length()==1) return s.charAt(0)-'A'+1;
+        return titleToNumber(s.substring(0, s.length()-1)) * 26 
+        + titleToNumber(""+s.charAt(s.length()-1));
+    }
+}
