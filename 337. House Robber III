@@ -1,0 +1,84 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    
+    //Traverse and dp TIMEOUT
+//     public int rob(TreeNode root) {
+//         //level order traversal first
+//         //Use deque to score traversal so we can visit it in backward order
+//         if (root == null) return 0;
+//         LinkedList<TreeNode> allNodes = new LinkedList<TreeNode>();
+//         int index = 0;
+//         allNodes.add(root);
+//         while(index < allNodes.size()) {
+//             int size = allNodes.size() - index;
+//             //deal with one level each time, check if this is the bottom level
+//             boolean bottom = true;
+//             for (int i = 0; i < size; i++) {
+//                 TreeNode node = allNodes.get(index + i);
+//                 if (node == null) continue;
+//                 if (node.left != null || node.right != null) {
+//                     bottom = false;
+//                     break;
+//                 };
+//             }
+//             if (bottom) break;
+//             for (int i = 0; i < size; i++) {
+//                 TreeNode node = allNodes.get(index + i);
+//                 if (node == null) {
+//                     allNodes.add(null);
+//                     allNodes.add(null);
+//                 } else {
+//                     allNodes.add(node.left);
+//                     allNodes.add(node.right);
+//                 }
+//             }
+//             index = index + size;
+//         }
+
+//         //dp[i][0] max money robbed if ith node not robbed, dp[i][1] max money robbed if ith node robbe
+//         int[][] dp = new int[allNodes.size()][2];
+//         for (int i = allNodes.size() - 1; i >= 0; i--) {
+//             TreeNode node = allNodes.get(i);
+//             if (node == null) {
+//                 continue;
+//             }
+//             if (node.left == null && node.right == null) {
+//                 dp[i][1] = node.val;
+//             } else {
+//                 dp[i][1] = node.val + dp[2 * i + 1][0] + dp[2 * i + 2][0];
+//                 dp[i][0] = Math.max(dp[2 * i + 1][0], dp[2 * i + 1][1]) + Math.max(dp[2 * i + 2][0], dp[2 * i + 2][1]);
+//             }
+//         }
+//         return Math.max(dp[0][1], dp[0][0]);
+//     }
+    
+//     public int rob(TreeNode root) {
+//     int[] res = robSub(root);
+//     return Math.max(res[0], res[1]);
+// }
+
+    public int rob(TreeNode root) {
+        int[] res = robSub(root);
+        return Math.max(res[0], res[1]);
+    }
+private int[] robSub(TreeNode root) {
+    if (root == null) return new int[2];
+    
+    int[] left = robSub(root.left);
+    int[] right = robSub(root.right);
+    int[] res = new int[2];
+
+    res[0] = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
+    res[1] = root.val + left[0] + right[0];
+    
+    return res;
+}
+}
