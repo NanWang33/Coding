@@ -1,0 +1,49 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    
+    //BFS
+//     public List<List<Integer>> levelOrderBottom(TreeNode root) {
+//         LinkedList<List<Integer>> res = new LinkedList<List<Integer>>();
+//         helper(root, res, 0);
+//         return res;
+//     }
+    
+//     private void helper(TreeNode root, LinkedList<List<Integer>> res, int height) {
+//         if (root == null) return;
+//         if (res.size() <= height) res.addFirst(new ArrayList<Integer>());
+//         res.get(res.size() - 1 - height).add(root.val);
+//         helper(root.left, res, height+1);
+//         helper(root.right, res, height+1);
+//     }
+
+    
+    //DFS with queue    
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        LinkedList<List<Integer>> res = new LinkedList<List<Integer>>();
+        if (root == null) return res;
+        
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.add(root);
+        List<Integer> level = new ArrayList<Integer>();
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode cur = queue.poll();
+                level.add(cur.val);
+                if (cur.left != null ) queue.add(cur.left);
+                if (cur.right != null ) queue.add(cur.right);
+            }
+            res.addFirst(level);
+            level = new ArrayList<Integer>();
+        }
+        return res;
+    }
+}
