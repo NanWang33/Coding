@@ -1,0 +1,69 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    // public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+    //     int len = 0;
+    //     int lenS = 0;
+    //     int lenL = 0;
+    //     ListNode idx1 = headA;
+    //     ListNode idx2 = headB;
+    //     while(idx1!=null && idx2!= null) {
+    //         idx1 = idx1.next;
+    //         idx2 = idx2.next;
+    //         len++;
+    //     }
+    //     lenS = len;
+    //     ListNode large = headA;
+    //     ListNode small = headB;
+    //     if (idx1 == null) {
+    //         large = headB;
+    //         small = headA;
+    //         while (idx2!=null){
+    //             idx2 = idx2.next;
+    //             len++;
+    //         }
+    //     } else {
+    //         while (idx1!=null){
+    //             idx1 = idx1.next;
+    //             len++;
+    //         }
+    //     }
+    //     lenL = len;
+    //     int diff = lenL - lenS;
+    //     while(diff > 0) {
+    //         large = large.next;
+    //         diff--;
+    //     }
+    //     while(large != small) {
+    //         large = large.next;
+    //         small = small.next;
+    //     }
+    //     return large;
+    // }
+    
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        //boundary check
+        if(headA == null || headB == null) return null;
+    
+        ListNode a = headA;
+        ListNode b = headB;
+    
+        //if a & b have different len, then we will stop the loop after second iteration
+        while( a != b){
+    	    //for the end of first iteration, we just reset the pointer to the head of another linkedlist
+            a = a == null? headB : a.next;
+            b = b == null? headA : b.next;    
+        }
+    
+        return a;
+    }
+}
