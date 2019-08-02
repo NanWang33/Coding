@@ -1,0 +1,44 @@
+class Solution {
+    
+    //DP - slow
+//     public int largestRectangleArea(int[] heights) {
+//         if (heights == null || heights.length == 0) return 0;
+//         return helper(heights, heights.length-1);
+//     }
+    
+//     private int helper(int[] heights, int n) {
+//         if (n == 0) return heights[0];
+//         int pre = helper(heights, n-1);
+//         int cur = heights[n];
+//         int min = cur;
+//         for (int i = n-1; i >= 0; i--) {
+//             min = Math.min(min, heights[i]);
+//             cur = Math.max(cur, min * (n + 1 - i));
+//         }
+//         return Math.max(pre, cur);
+//     }
+    
+    //Stack
+    public int largestRectangleArea(int[] h) {
+        int n = h.length, i = 0, max = 0;
+        Stack<Integer> s = new Stack<Integer>();
+    
+        while (i < n) {
+            // as long as the current bar is shorter than the last one in the stack
+            // we keep popping out the stack and calculate the area based on
+            // the popped bar
+            while (!s.isEmpty() && h[i] < h[s.peek()]) {
+            max = Math.max(max, h[s.pop()] * (i - (s.isEmpty() ? 0 : s.peek() + 1)));
+            }
+            // put current bar's index to the stack
+            s.push(i++);
+        }
+    
+        // finally pop out any bar left in the stack and calculate the area based on it
+        while (!s.isEmpty()) {
+            max = Math.max(max, h[s.pop()] * (n - (s.isEmpty() ? 0 : s.peek() + 1)));
+        }
+    
+        return max;
+    }
+}
