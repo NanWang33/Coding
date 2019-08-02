@@ -7,24 +7,59 @@
  * }
  */
 class Solution {
-    public void reorderList(ListNode head) {
-        if (head == null || head.next == null || head.next.next == null) return;
+//     public void reorderList(ListNode head) {
+//         if (head == null || head.next == null || head.next.next == null) return;
         
-        Stack<ListNode> stack = new Stack<ListNode>();
-        ListNode index = head;
-        while (index != null) {
-            stack.push(index);
-            index = index.next;
+//         Stack<ListNode> stack = new Stack<ListNode>();
+//         ListNode index = head;
+//         while (index != null) {
+//             stack.push(index);
+//             index = index.next;
+//         }
+//         index = head;
+//         ListNode last = stack.pop();
+//         while (index != last && last.next != index) {
+//             ListNode nextIndex = index.next;
+//             index.next = last;
+//             last.next = nextIndex;
+//             index = nextIndex;
+//             last = stack.pop();
+//         }
+//         index.next = null;
+//     }
+    
+    public void reorderList(ListNode head) {
+            if(head==null||head.next==null) return;
+            
+            //Find the middle of the list
+            ListNode p1=head;
+            ListNode p2=head;
+            while(p2.next!=null&&p2.next.next!=null){ 
+                p1=p1.next;
+                p2=p2.next.next;
+            }
+            
+            //Reverse the half after middle  1->2->3->4->5->6 to 1->2->3->6->5->4
+            ListNode preMiddle=p1;
+            ListNode preCurrent=p1.next;
+            while(preCurrent.next!=null){
+                ListNode current=preCurrent.next;
+                preCurrent.next=current.next;
+                current.next=preMiddle.next;
+                preMiddle.next=current;
+            }
+            
+            //Start reorder one by one  1->2->3->6->5->4 to 1->6->2->5->3->4
+            p1=head;
+            p2=preMiddle.next;
+            preMiddle.next = null;
+            while(p1!=null && p2!= null){
+                ListNode nP1 = p1.next;
+                ListNode nP2 = p2.next;
+                p1.next = p2;
+                p2.next = nP1;
+                p1 = nP1;
+                p2 = nP2;
+            }
         }
-        index = head;
-        ListNode last = stack.pop();
-        while (index != last && last.next != index) {
-            ListNode nextIndex = index.next;
-            index.next = last;
-            last.next = nextIndex;
-            index = nextIndex;
-            last = stack.pop();
-        }
-        index.next = null;
-    }
 }
