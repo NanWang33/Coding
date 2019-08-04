@@ -1,0 +1,30 @@
+class Solution {
+    //Slow
+    // public void moveZeroes(int[] nums) {
+    //     int index = nums.length-1;
+    //     for (int i = nums.length - 1; i >= 0; i--) {
+    //         if (nums[i] == 0) {
+    //             //move all nums from i to index-1 forward 
+    //             for (int j = i+1; j <= index; j++) {
+    //                 nums[j-1] = nums[j];
+    //             }
+    //             nums[index] = 0;
+    //             index--;
+    //         }
+    //     }
+    // }
+    
+    public void moveZeroes(int[] nums) {
+        int index = 0;
+        for(int i = 0; i < nums.length; i++) {
+            if (nums[i] != 0){
+                nums[index] = nums[i];
+                index++;
+            }
+        }
+        while (index < nums.length) {
+            nums[index] = 0;
+            index++;
+        }
+    }
+}
