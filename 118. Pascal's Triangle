@@ -1,0 +1,71 @@
+class Solution {
+//     private Map<Integer, List<List<Integer>>> map = new HashMap<Integer, List<List<Integer>>>();
+    
+//     public List<List<Integer>> generate(int numRows) {
+//         if (map.containsKey(numRows)) return map.get(numRows);
+        
+//         List<List<Integer>> res = new ArrayList<List<Integer>>();
+//         if (numRows == 0) {
+//             map.put(0, res);
+//             return res;
+//         } 
+//         if (numRows == 1) {
+//             List<Integer> one = new ArrayList<Integer>();
+//             one.add(1);
+//             res.add(one);
+//             map.put(1, res);
+//             return res;
+//         }
+//         res = generate(numRows - 1);
+//         List<Integer> last = res.get(res.size()-1);
+//         List<Integer> one = new ArrayList<Integer>();
+//         one.add(1);
+//         for (int i = 0; i < last.size() - 1; i++) {
+//             one.add(last.get(i) + last.get(i+1));
+//         }
+//         one.add(1);
+//         res.add(one);
+//         map.put(numRows, res);
+//         return res;
+//     }
+    
+//     public List<List<Integer>> generate(int numRows) {
+//         List<List<Integer>> res = new ArrayList<List<Integer>>();
+//         helper(numRows, res);
+//         return res;
+//     }
+    
+//     private void helper(int numRows, List<List<Integer>> res) {
+//         if (numRows == 0) return;
+//         if (numRows == 1) {
+//             List<Integer> one = new ArrayList<Integer>();
+//             one.add(1);
+//             res.add(one);
+//             return;
+//         }
+//         helper(numRows-1, res);
+//         List<Integer> last = res.get(res.size()-1);
+//         List<Integer> one = new ArrayList<Integer>();
+//         one.add(1);
+//         for (int i = 0; i < last.size() - 1; i++) {
+//             one.add(last.get(i) + last.get(i+1));
+//         }
+//         one.add(1);
+//         res.add(one);
+//     }
+    
+    public List<List<Integer>> generate(int numRows)
+{
+	    List<List<Integer>> allrows = new ArrayList<List<Integer>>();
+	    ArrayList<Integer> row = new ArrayList<Integer>();
+	    for(int i=0;i<numRows;i++)
+	    {
+		    row.add(0, 1);
+		    for(int j=1;j<row.size()-1;j++)
+			    row.set(j, row.get(j)+row.get(j+1));
+		        allrows.add(new ArrayList<Integer>(row));
+	        }   
+	    return allrows;
+	
+    }
+}
