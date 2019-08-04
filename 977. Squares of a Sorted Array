@@ -1,0 +1,80 @@
+class Solution {
+    
+    public int[] sortedSquares(int[] A) {
+        int N = A.length;
+        int j = 0;
+        while (j < N && A[j] < 0)
+            j++;
+        int i = j-1;
+
+        int[] ans = new int[N];
+        int t = 0;
+
+        while (i >= 0 && j < N) {
+            if (A[i] * A[i] < A[j] * A[j]) {
+                ans[t++] = A[i] * A[i];
+                i--;
+            } else {
+                ans[t++] = A[j] * A[j];
+                j++;
+            }
+        }
+
+        while (i >= 0) {
+            ans[t++] = A[i] * A[i];
+            i--;
+        }
+        while (j < N) {
+            ans[t++] = A[j] * A[j];
+            j++;
+        }
+
+        return ans;
+    }
+
+//     public int[] sortedSquares(int[] A) {
+//         if (A == null || A.length == 0) return new int[0];
+//         int[] res = new int[A.length];
+//         int index = findMinIndex(A);
+        
+//         //all negatives
+//         if (index == A.length) {
+//             for (int i = index-1; i >= 0; i--) {
+//                 res[A.length - 1 - i] = A[i] * A[i];
+//             }
+//             return res;
+//         }
+        
+//         res[0] = A[index] * A[index];
+//         int l = index - 1;
+//         int r = index + 1;
+//         int idx = 1;
+//         while (l >= 0 || r <= A.length-1) {
+//             int left = l < 0 ? Integer.MAX_VALUE : A[l] * A[l];
+//             int right = r >= A.length ? Integer.MAX_VALUE : A[r] * A[r];
+//             if (left < right) {
+//                 res[idx] = left;
+//                 l--;
+//             } else {
+//                 res[idx] = right;
+//                 r++;
+//             }
+//             idx++;
+//         }
+//         return res;
+//     }
+    
+//     private int findMinIndex(int[] A) {
+//         int l = 0;
+//         int r = A.length - 1;
+//         while(l <= r) {
+//             int m = l + (r-l)/2;
+//             if (A[m] >= 0 ) r = m - 1;
+//             else l = m + 1;
+//         }
+//         if (l > 0 && l < A.length) {
+//             if (Math.abs(A[l-1]) < A[l]) return l-1;
+//         }
+//         return l;
+//     }
+}
