@@ -1,0 +1,69 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+        //Do NOT need to copy arrays
+//     public TreeNode buildTree(int[] preorder, int[] inorder) {
+//         if (preorder == null || inorder == null) return null;
+//         if(preorder.length != inorder.length) return null;
+//         if(preorder.length == 0 || inorder.length == 0) return null;
+        
+//         TreeNode root = new TreeNode(preorder[0]);
+                
+//         int i;
+//         for ( i = 0; i < inorder.length; i++) {
+//             if (inorder[i] == preorder[0]) {
+//                 break;
+//             }
+//         }
+//         //i now is the index of root in inorder
+//         //and the number of nodes in left
+//         int[] leftInorder = new int[i];
+//         int[] rightInorder = new int[inorder.length - i - 1];
+//         int[] leftPreorder = new int[i];
+//         int[] rightPreorder = new int[inorder.length - i - 1];
+//         for (int j = 0; j < inorder.length; j++) {
+//             if (j < i) leftInorder[j] = inorder[j];
+//             else if (j > i) rightInorder[j-1-i] = inorder[j];
+//         }
+//         for (int j = 1; j < preorder.length; j++) {
+//             if (j <= i) leftPreorder[j-1] = preorder[j];
+//             else rightPreorder[j-1-i] = preorder[j];
+//         }
+//         root.left = buildTree(leftPreorder, leftInorder);
+//         root.right = buildTree(rightPreorder, rightInorder);
+
+//         return root;
+//     }
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+
+        return helper(preorder, inorder, 0, preorder.length, 0, inorder.length);
+    }
+    
+    //[)interval
+    private TreeNode helper(int[] preorder, int[] inorder, int preStartIndex, int preEndIndex, int inStartIndex, int inEndIndex) {
+        if (preorder == null || inorder == null) return null;
+        if(preEndIndex <= preStartIndex || inEndIndex <= inStartIndex) return null;
+        
+        TreeNode root = new TreeNode(preorder[preStartIndex]);
+        int i;
+        for ( i = inStartIndex; i < inEndIndex; i++) {
+            if (inorder[i] == preorder[preStartIndex]) {
+                break;
+            }
+        }
+        //i now is the index of root in inorder
+        // i - inStartIndex = # of left nodes
+        int leftIndex = preStartIndex + 1 + i - inStartIndex;
+        root.left = helper(preorder, inorder, preStartIndex + 1, leftIndex, inStartIndex, i);
+        root.right = helper(preorder, inorder, leftIndex, preEndIndex, i+1, inEndIndex);
+        return root;
+        
+    }
+}
