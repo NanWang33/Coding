@@ -1,0 +1,106 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node next;
+    public Node random;
+
+    public Node() {}
+
+    public Node(int _val,Node _next,Node _random) {
+        val = _val;
+        next = _next;
+        random = _random;
+    }
+};
+*/
+class Solution {
+//     public Node copyRandomList(Node head) {
+//         if (head == null) return null;
+        
+//         Map<Node, Node> map = new HashMap<Node, Node>();
+//         Node index = head;
+//         while (index != null) {
+//             map.put(index, null);
+//             index = index.next;
+//         }
+//         index = head;
+        
+//         while (index != null) {
+//             Node newNode;
+//             if (map.get(index) == null) {
+//                 newNode = new Node(index.val);
+//                 map.put(index, newNode);
+//             } else {
+//                 newNode = map.get(index);
+//             }
+            
+//             if (index.next != null && map.get(index.next) == null) {
+//                 Node next = new Node(index.next.val);
+//                 newNode.next = next;
+//                 map.put(index.next, next);
+//             } else if (index.next == null) {
+//                 newNode.next = null;
+//             } else {
+//                 newNode.next = map.get(index.next);
+//             }
+            
+//             if (index.random != null && map.get(index.random) == null) {
+//                 Node random = new Node(index.random.val);
+//                 newNode.random = random;
+//                 map.put(index.random, random);
+//             } else if (index.random == null) {
+//                 newNode.random = null;
+//             } else {
+//                 newNode.random = map.get(index.random);
+//             }
+//             index = index.next;
+//         }
+
+//         return map.get(head);
+//     }
+    
+    public Node copyRandomList(Node head) {
+        Node iter = head, next;
+
+        // First round: make copy of each node,
+        // and link them together side-by-side in a single list.
+        while (iter != null) {
+            next = iter.next;
+
+            Node copy = new Node(iter.val);
+            iter.next = copy;
+            copy.next = next;
+
+            iter = next;
+        }
+
+        // Second round: assign random pointers for the copy nodes.
+        iter = head;
+        while (iter != null) {
+            if (iter.random != null) {
+                iter.next.random = iter.random.next;
+            }
+            iter = iter.next.next;
+        }
+
+        // Third round: restore the original list, and extract the copy list.
+        iter = head;
+        Node pseudoHead = new Node(0);
+        Node copy, copyIter = pseudoHead;
+
+        while (iter != null) {
+            next = iter.next.next;
+
+            // extract the copy
+            copy = iter.next;
+            copyIter.next = copy;
+            copyIter = copy;
+
+            // restore the original list
+            iter.next = next;
+            iter = next;
+        }
+        return pseudoHead.next;
+    }
+}
