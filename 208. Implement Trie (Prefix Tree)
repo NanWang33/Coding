@@ -1,0 +1,58 @@
+class Trie {
+
+    /** Initialize your data structure here. */
+    public Trie() {}
+    
+    private Node root = null;
+    
+    /** Inserts a word into the trie. */
+    public void insert(String word) {
+        root = insertHelper(root, word);
+    }
+    
+    private Node insertHelper(Node node, String word) {
+        if (node == null) { node = new Node(word); return node;}
+        if (word.compareTo(node.val) == 0) return node;
+        if (word.compareTo(node.val) < 0) node.left = insertHelper(node.left, word);
+        else node.right = insertHelper(node.right, word);
+        return node;
+    }
+    
+    /** Returns if the word is in the trie. */
+    public boolean search(String word) {
+        return searchHelper(root, word);
+    }
+    
+    private boolean searchHelper(Node node, String word) {
+        if (node == null) return false;
+        if (node.val.equals(word)) return true;
+        if (word.compareTo(node.val) < 0) return searchHelper(node.left, word);
+        else return searchHelper(node.right, word);
+    }
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    public boolean startsWith(String prefix) {
+        return startsWithHelper(root, prefix);
+    }
+    
+    private boolean startsWithHelper(Node node, String prefix) {
+        if (node == null) return false;
+        if (node.val.startsWith(prefix)) return true;
+        if (prefix.compareTo(node.val) < 0) return startsWithHelper(node.left, prefix);
+        else return startsWithHelper(node.right, prefix);
+    }
+}
+
+class Node {
+        Node left;
+        Node right;
+        String val;
+        
+        Node(String s) {val = s;}
+}
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie obj = new Trie();
+ * obj.insert(word);
+ * boolean param_2 = obj.search(word);
+ * boolean param_3 = obj.startsWith(prefix);
+ */
