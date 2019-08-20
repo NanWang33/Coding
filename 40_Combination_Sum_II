@@ -26,4 +26,54 @@ class Solution {
             
         }
     }
+    
+    
+   //Use count
+   public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+            List<List<Integer>> res = new ArrayList<List<Integer>>();
+            List<Integer> cur = new ArrayList<Integer>();
+            Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+            
+            for (int n : candidates) {
+                Integer val = map.get(n);
+                if (val == null) val = 0;
+                map.put(n, val+1);
+            }
+            
+            int[] nums = new int[map.size()];
+            int[] count = new int[map.size()];
+            int index = 0;
+            List<Map.Entry<Integer, Integer>> entryList = new ArrayList<>(map.entrySet());
+            Collections.sort(entryList, new Comparator<Map.Entry<Integer, Integer>>(){
+                @Override
+                public int compare(Map.Entry<Integer, Integer> arg0, Map.Entry<Integer, Integer> arg1) {
+                    return arg0.getKey() - arg1.getKey();
+                } 
+            });
+            for (Map.Entry<Integer, Integer> en : entryList) {
+                nums[index] = en.getKey();
+                count[index] = en.getValue();
+                index++;
+            }
+            
+            dfs(nums, count, 0, target, cur, res);
+            return res;
+        }
+        
+        private void dfs(int[] nums, int[] count, int depth, int target, List<Integer> cur, List<List<Integer>> res) {
+            if (target == 0) {
+                res.add(new ArrayList<Integer>(cur));
+                return;
+            }
+            for (int i = depth; i < nums.length; i++) {
+                if (nums[i] > target) break;
+                if (count[i] == 0) continue;
+                cur.add(nums[i]);
+                count[i]--;
+                dfs(nums, count, i, target - nums[i], cur, res);
+                cur.remove(cur.size()-1);
+                count[i]++;
+            }
+        }
+
 }
