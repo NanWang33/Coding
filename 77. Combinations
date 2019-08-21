@@ -1,0 +1,40 @@
+class Solution {
+//     public List<List<Integer>> combine(int n, int k) {
+//         List<List<Integer>> res = new ArrayList<List<Integer>>();
+//         List<Integer> cur = new ArrayList<Integer>();
+//         dfs(n, k, 0, cur, res);
+//         return res;
+//     }
+    
+//     private void dfs(int n, int k, int depth, List<Integer> cur, List<List<Integer>> res) {
+//         if (cur.size() == k) {
+//             res.add(new ArrayList<Integer>(cur));
+//             return;
+//         }
+//         for (int i = depth; i < n; i++) {
+//             cur.add(i+1);
+//             dfs(n, k, i+1, cur, res);
+//             cur.remove(cur.size()-1);
+//         }
+//     }
+    
+        public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        List<Integer> cur = new ArrayList<Integer>();
+        dfs(n, k, 0, cur, res);
+        return res;
+    }
+    
+    private void dfs(int n, int k, int depth, List<Integer> cur, List<List<Integer>> res) {
+        if (k == 0) {
+            res.add(new ArrayList<Integer>(cur));
+            return;
+        }
+        //To make things faster, don't need to go into for loop when the count of remaining integers is smaller than k
+        for (int i = depth; i + k - 1 < n; i++) {
+            cur.add(i+1);
+            dfs(n, k-1, i+1, cur, res);
+            cur.remove(cur.size()-1);
+        }
+    }
+}
