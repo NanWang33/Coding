@@ -1,0 +1,26 @@
+class Solution {
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        List<Integer> cur = new ArrayList<Integer>();
+        boolean[] used = new boolean[9];
+        dfs(k, n, 1, cur, res, used);
+        return res;
+    }
+    
+    private void dfs(int k, int target, int depth, List<Integer> cur, List<List<Integer>> res, boolean[] used) {
+        if (target == 0 && k == 0) {
+            res.add(new ArrayList<Integer>(cur));
+            return;
+        }
+        for (int i = depth; i <=9; i++) {
+            if (used[i-1]) continue;
+            if (target - i < 0 || k <= 0) break;
+            used[i-1] = true;
+            cur.add(i);
+            dfs(k-1, target - i, i+1, cur, res, used);
+            used[i-1] = false;
+            cur.remove(cur.size()-1);
+            
+        }
+    }
+}
