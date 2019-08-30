@@ -1,0 +1,28 @@
+class Solution {
+    public String[] reorderLogFiles(String[] logs) {
+        List<String> res = new ArrayList<String>();
+        List<String> digits = new ArrayList<String>();
+        for (String log : logs) {
+            String[] words = log.split(" ");
+            String first = words[1];
+            String identifier = words[0];
+            if (Character.isDigit(first.charAt(0))) digits.add(log);
+            else res.add(log);
+        }
+        
+        Collections.sort(res, new Comparator<String>(){
+            @Override
+            public int compare(String s1, String s2) {
+                String log1 = s1.substring(s1.indexOf(" ") + 1);
+                String log2 = s2.substring(s2.indexOf(" ") + 1);
+                if (log1.equals(log2)) {
+                    return s1.split(" ")[0].compareTo(s2.split(" ")[0]);
+                } else {
+                    return log1.compareTo(log2);
+                }
+            }
+        });
+        res.addAll(digits);
+        return res.toArray(new String[res.size()]);
+    }
+}
