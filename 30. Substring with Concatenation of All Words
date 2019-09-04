@@ -1,0 +1,73 @@
+class Solution {
+    
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> result = new ArrayList<Integer>();
+        if (words == null || words.length == 0) return result;
+        
+        Map<String, Integer> counts = new HashMap<String, Integer>();
+        for (String word : words){
+            counts.put(word, counts.getOrDefault(word, 0) + 1);
+        }
+        
+        int interval = words[0].length();
+        int count = words.length;
+        for (int i = 0; i + interval * count <= s.length(); i++) {
+            int j = 0;
+            Map<String, Integer> temp = new HashMap<String, Integer>();
+            while(j < count) {
+                String token = s.substring(i + j * interval, i + (j + 1) * interval);
+                if (!counts.containsKey(token)) break;
+                temp.put(token, temp.getOrDefault(token, 0) + 1);
+                if (temp.get(token) > counts.get(token)) break;
+                j++;
+            }
+            if (j == count) {
+                result.add(i);
+            }
+        }
+        return result;
+    }
+    
+       //Timeout
+//     public List<Integer> findSubstring(String s, String[] words) {
+//         List<Integer> result = new ArrayList<Integer>();
+//         if (words == null || words.length == 0) return result;
+        
+//         Set<String> dict = permutation(words);
+//         int length = words.length * words[0].length();
+//         if (s.length() < length) return result;
+        
+//         for (int i = 0; i + length <= s.length(); i++) {
+//             String window = s.substring(i, length + i);
+//             if (dict.contains(window)) result.add(i);
+//         }
+//         return result;
+//     }
+    
+//     private Set<String> permutation(String[] words) {
+//         Arrays.sort(words);
+//         Set<String> result = new HashSet<String>();
+//         boolean[] visited = new boolean[words.length];
+//         dfs(words, 0, new StringBuilder(), result, visited);
+//         return result;
+//     }
+    
+//     private void dfs(String[] words, int depth, StringBuilder sb, Set<String> result, boolean[] visited) {
+//         if (depth == words.length) {
+//             result.add(sb.toString());
+//             sb = new StringBuilder();
+//             return;
+//         }
+//         for (int i = 0; i < words.length; i++) {
+//             if (i > 0 && words[i-1].equals(words[i]) && visited[i-1] == false) continue;
+//             if (visited[i] == false) {
+//                 int index= sb.length();
+//                 sb.append(words[i]);
+//                 visited[i] = true;
+//                 dfs(words, depth+1, sb, result, visited);
+//                 sb.delete(index, sb.length());
+//                 visited[i] = false;
+//             }
+//         }
+//     }
+}
