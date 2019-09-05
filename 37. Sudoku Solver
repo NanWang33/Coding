@@ -1,0 +1,42 @@
+class Solution {
+    public void solveSudoku(char[][] board) {
+        if (board == null || board.length == 0) return;
+        solve(board);
+    }
+    
+    public boolean solve(char[][] board) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                char c = board[i][j];
+                if (c == '.') {
+                    for (char newc = '1'; newc <= '9'; newc++) {
+                        if (valid(board, i, j, newc)) {
+                            board[i][j] = newc;
+                            if (solve(board)) return true;
+                            board[i][j] = '.';
+                        }       
+                    }
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+    private boolean valid(char[][] board, int i, int j, char c) {
+        for (char ch :board[i]) {
+            if (ch == c) return false;
+        }
+        for (int index = 0; index < 9; index++) {
+            if (board[index][j] == c) return false;
+        }
+        int x = i / 3;
+        int y = j / 3;
+        for (int a = x * 3; a < x*3 + 3; a++) {
+            for (int b = y * 3; b <y*3 + 3; b++) {
+                if (board[a][b] == c) return false;
+            }
+        }
+        return true;
+    }
+}
