@@ -1,0 +1,50 @@
+class Solution {
+    private int[][] diffs = new int[][] {{1,0}, {-1,0}, {0,-1}, {0,1}};
+    public int shortestBridge(int[][] A) {
+        //mark one of the island to "2"
+        int m = A.length;
+        int n = A[0].length;
+        Queue<int[]> queue = new LinkedList<int[]>();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (A[i][j] == 1) {
+                    markTwo(A, i, j, queue);
+                    return expand(A, i, j, queue);
+                }
+            }
+        }
+        return -1;
+    }
+    
+    private void markTwo(int[][] A, int i, int j, Queue<int[]> queue) {
+        if (i < 0 || i >= A.length || j < 0 || j >= A[0].length) return;
+        if (A[i][j] != 1) return;
+        A[i][j] = 2;
+        queue.offer(new int[]{i, j});
+        markTwo(A, i-1, j, queue);
+        markTwo(A, i+1, j, queue);
+        markTwo(A, i, j-1, queue);
+        markTwo(A, i, j+1, queue);
+    }
+    
+    private int expand(int[][] A, int i, int j, Queue<int[]> queue) {
+        int distance = 0;
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            for (int k = 0; k < size; k++) {
+                int[] p = queue.poll();
+                for (int[] diff : diffs) {
+                    int x = p[0] + diff[0];
+                    int y = p[1] + diff[1];
+                    if (x >= 0 && x < A.length && y >=0 && y < A[0].length && A[x][y]!=2) {
+                        if (A[x][y] == 1) return distance;
+                        A[x][y] = 2;
+                        queue.offer(new int[]{x, y});
+                    }
+                }
+            }
+            distance++;
+        }
+        return -1;
+    }
+}
