@@ -1,0 +1,30 @@
+class Solution {
+    public int[][] updateMatrix(int[][] matrix) {
+        int[][] res = new int[matrix.length][matrix[0].length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                res[i][j] = distance(matrix, i, j);
+            }
+        }
+        return res;
+    }
+    
+    private int distance(int[][] matrix, int x, int y) {
+        int distance = 0;
+        Queue<int[]> queue = new LinkedList<int[]>();
+        queue.offer(new int[]{x, y});
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int[] pos = queue.poll();
+                if (matrix[pos[0]][pos[1]] == 0) return distance;
+                if (pos[0] > 0) queue.offer(new int[]{pos[0]-1, pos[1]});
+                if (pos[0] < matrix.length-1) queue.offer(new int[]{pos[0]+1, pos[1]});
+                if (pos[1] > 0) queue.offer(new int[]{pos[0], pos[1]-1});
+                if (pos[1] < matrix[0].length-1) queue.offer(new int[]{pos[0], pos[1]+1});
+            }
+            distance++;
+        }
+        return -1;
+    }
+}
