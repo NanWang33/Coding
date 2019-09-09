@@ -1,0 +1,64 @@
+class Solution {
+    public int cutOffTree(List<List<Integer>> forest) {
+        //Convert list into array
+        int[][] matrix = new int[forest.size()][forest.get(0).size()];
+
+        //use PriorityQueue to store tree height - position
+        PriorityQueue<int[]> treemap = new PriorityQueue<int[]>((a,b)->(a[2]-b[2]));
+
+        for (int i = 0; i < forest.size(); i++) {
+            List<Integer> row = forest.get(i);
+            for (int j = 0; j < row.size(); j++) {
+                matrix[i][j] = row.get(j);
+                if (row.get(j) > 1) {
+                    treemap.add(new int[]{i,j, row.get(j)});
+                }
+            }
+        }
+        
+        
+        //for each tree in TreeMap, find minStep
+        int sum = 0;
+        if(matrix[0][0] == 0) return -1;
+        
+        int[] curPos = treemap.poll();
+        int[] prevPos = new int[]{0,0, matrix[0][0]};
+        
+        while(curPos != null) {
+            boolean[][] visited = new boolean[matrix.length][matrix[0].length];
+
+            int steps = count(matrix, prevPos, curPos, visited);
+            if (steps < 0) return -1;
+            sum += steps;
+            matrix[curPos[0]][curPos[1]] = 1;
+            prevPos = curPos;
+            curPos = treemap.poll();
+        }
+        return sum;
+    }
+    
+    private int count(int[][] matrix, int[] prev, int[] cur, boolean[][] visited) {
+        //BFS to search for shortest path
+        int distance = 0;
+        Queue<int[]> queue = new LinkedList<int[]>();
+        queue.offer(prev);
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int[] pos = queue.poll();
+                int x = pos[0];
+                int y = pos[1];
+                if (x < 0 || x >= matrix.length || y < 0 || y >= matrix[0].length || visited[x][y]) continue;
+                if (x == cur[0] && y == cur[1]) return distance;
+                if (matrix[x][y] == 0) continue;
+                queue.offer(new int[]{x-1, y});
+                queue.offer(new int[]{x+1, y});
+                queue.offer(new int[]{x, y-1});
+                queue.offer(new int[]{x, y+1});
+                visited[x][y] = true;
+            }
+            distance++;
+        }
+        return -1;
+    }
+}
