@@ -1,0 +1,60 @@
+class Solution {
+public List<Integer> splitIntoFibonacci(String S) {
+        List<Integer> res = new ArrayList<Integer>();
+        if (S == null || S.length() < 3) return res;
+        //deal with special case, all zero
+        boolean allz = true;
+        for(char c : S.toCharArray()) {
+            if (c != '0') {
+                allz = false;
+                break;
+            }
+        }
+        if (allz) {
+            for(int i = 0; i < S.length(); i++) {
+                res.add(0);
+            }
+            return res;
+        }
+        
+        //pick first two numbers first
+        for (int i = 1; i <= Math.min(S.length()-2, 9); i++) {
+            int first = Integer.parseInt(S.substring(0, i));
+            int temp = i;
+            if (S.charAt(0) == '0') {
+                first = 0;
+                i = S.length();
+            }
+            for (int j = temp+1; j <= Math.min(S.length()-1, temp+9); j++) {
+                int second = Integer.parseInt(S.substring(temp, j));
+                int k = j;
+                if (S.charAt(temp) == '0') {
+                    second = 0;
+                    j = S.length();
+                }
+                res.add(first);
+                res.add(second);
+                if (dfs(res, S.substring(k))) return res;
+                res = new ArrayList<Integer>();
+            }
+        }
+        return new ArrayList<Integer>();
+    }
+    
+    private boolean dfs(List<Integer> res, String s) {
+        if (s.length() == 0) return true;
+        if (s.startsWith("0")) return false;
+        
+        int second = res.get(res.size()-1);
+        int first = res.get(res.size()-2);
+        int sum = first + second;
+        String next = "" + sum;
+        
+        if (s.startsWith(next)) {
+            res.add(sum);
+            if (dfs(res, s.substring(next.length()))) return true;
+            res.remove(res.size()-1);
+        }
+        return false;
+    }
+}
