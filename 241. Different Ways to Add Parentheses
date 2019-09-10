@@ -1,0 +1,48 @@
+class Solution {
+    public List<Integer> diffWaysToCompute(String input) {
+        List<Integer> res = new ArrayList<Integer>();
+        //process input into two lists
+        List<Integer> digits = new ArrayList<Integer>();
+        List<Character> operators = new ArrayList<Character>();
+        for (char c : input.toCharArray()) {
+            if (c == '+' || c == '-' || c == '*') operators.add(c);
+        }
+        String[] tokens = input.split("[\\+\\-\\*]");
+        for (String token : tokens) {
+            digits.add(Integer.parseInt(token));
+        }
+        dfs(digits, operators, operators.size()-1, res);
+        return res;
+    }
+    
+    private void dfs(List<Integer> digits, List<Character> operators, int index, List<Integer> res) {
+        if (index < 0) {
+            res.add(digits.get(0));
+            return;
+        }
+        
+        for (int i = index; i >=0; i--) {
+            char op = operators.get(i);
+            int left = digits.get(i);
+            int right = digits.get(i+1);
+            int newVal = 0;
+            switch (op) {
+                case '+' : newVal = left + right; break;
+                case '-' : newVal = left - right; break;
+                case '*' : newVal = left * right; break;
+            }
+            
+            operators.remove(i);
+            digits.remove(i+1);
+            digits.remove(i);
+            digits.add(i, newVal);
+            int newIndex = i == operators.size() ? i-1 : i;
+            dfs(digits, operators, newIndex, res);
+            operators.add(i, op);
+            digits.remove(i);
+            digits.add(i, left);
+            digits.add(i+1, right);
+        }
+        
+    }
+}
