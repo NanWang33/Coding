@@ -1,48 +1,82 @@
 class Solution {
-    public List<Integer> diffWaysToCompute(String input) {
-        List<Integer> res = new ArrayList<Integer>();
-        //process input into two lists
-        List<Integer> digits = new ArrayList<Integer>();
-        List<Character> operators = new ArrayList<Character>();
-        for (char c : input.toCharArray()) {
-            if (c == '+' || c == '-' || c == '*') operators.add(c);
-        }
-        String[] tokens = input.split("[\\+\\-\\*]");
-        for (String token : tokens) {
-            digits.add(Integer.parseInt(token));
-        }
-        dfs(digits, operators, operators.size()-1, res);
-        return res;
-    }
+        //DFS
+//     public List<Integer> diffWaysToCompute(String input) {
+//         List<Integer> res = new ArrayList<Integer>();
+//         //process input into two lists
+//         List<Integer> digits = new ArrayList<Integer>();
+//         List<Character> operators = new ArrayList<Character>();
+//         for (char c : input.toCharArray()) {
+//             if (c == '+' || c == '-' || c == '*') operators.add(c);
+//         }
+//         String[] tokens = input.split("[\\+\\-\\*]");
+//         for (String token : tokens) {
+//             digits.add(Integer.parseInt(token));
+//         }
+//         dfs(digits, operators, operators.size()-1, res);
+//         return res;
+//     }
     
-    private void dfs(List<Integer> digits, List<Character> operators, int index, List<Integer> res) {
-        if (index < 0) {
-            res.add(digits.get(0));
-            return;
-        }
+//     private void dfs(List<Integer> digits, List<Character> operators, int index, List<Integer> res) {
+//         if (index < 0) {
+//             res.add(digits.get(0));
+//             return;
+//         }
         
-        for (int i = index; i >=0; i--) {
-            char op = operators.get(i);
-            int left = digits.get(i);
-            int right = digits.get(i+1);
-            int newVal = 0;
-            switch (op) {
-                case '+' : newVal = left + right; break;
-                case '-' : newVal = left - right; break;
-                case '*' : newVal = left * right; break;
-            }
+//         for (int i = index; i >=0; i--) {
+//             char op = operators.get(i);
+//             int left = digits.get(i);
+//             int right = digits.get(i+1);
+//             int newVal = 0;
+//             switch (op) {
+//                 case '+' : newVal = left + right; break;
+//                 case '-' : newVal = left - right; break;
+//                 case '*' : newVal = left * right; break;
+//             }
             
-            operators.remove(i);
-            digits.remove(i+1);
-            digits.remove(i);
-            digits.add(i, newVal);
-            int newIndex = i == operators.size() ? i-1 : i;
-            dfs(digits, operators, newIndex, res);
-            operators.add(i, op);
-            digits.remove(i);
-            digits.add(i, left);
-            digits.add(i+1, right);
-        }
+//             operators.remove(i);
+//             digits.remove(i+1);
+//             digits.remove(i);
+//             digits.add(i, newVal);
+//             int newIndex = i == operators.size() ? i-1 : i;
+//             dfs(digits, operators, newIndex, res);
+//             operators.add(i, op);
+//             digits.remove(i);
+//             digits.add(i, left);
+//             digits.add(i+1, right);
+//         }
         
+//     }
+    
+    //Recursive
+    public List<Integer> diffWaysToCompute(String input) {
+        List<Integer> ret = new LinkedList<Integer>();
+        for (int i=0; i<input.length(); i++) {
+            if (input.charAt(i) == '-' ||
+                input.charAt(i) == '*' ||
+                input.charAt(i) == '+' ) {
+                String part1 = input.substring(0, i);
+                String part2 = input.substring(i+1);
+                List<Integer> part1Ret = diffWaysToCompute(part1);
+                List<Integer> part2Ret = diffWaysToCompute(part2);
+                for (Integer p1 :   part1Ret) {
+                    for (Integer p2 :   part2Ret) {
+                        int c = 0;
+                        switch (input.charAt(i)) {
+                            case '+': c = p1+p2;
+                                break;
+                            case '-': c = p1-p2;
+                                break;
+                            case '*': c = p1*p2;
+                                break;
+                        }
+                        ret.add(c);
+                    }
+                }
+            }
+        }
+        if (ret.size() == 0) {
+            ret.add(Integer.valueOf(input));
+        }
+        return ret;
     }
 }
