@@ -20,12 +20,14 @@ class Solution {
         if (root.left == null && root.right == null){
             res.add(sb.toString());
         }
-        StringBuilder newSB = new StringBuilder(sb.toString());
+        int index = sb.length();
         if (root.left != null) {
             helper(root.left, sb.append("->" + root.left.val), res);
+            sb.delete(index, sb.length());
         }
         if (root.right != null) {
-            helper(root.right, newSB.append("->" + root.right.val), res);
+            helper(root.right, sb.append("->" + root.right.val), res);
+            sb.delete(index, sb.length());
         }
     }
 }
