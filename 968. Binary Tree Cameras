@@ -1,0 +1,50 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    
+//     //DP
+//     public int minCameraCover(TreeNode root) {
+//         int[] res = helper(root);
+//         return Math.min(res[1], res[2]);
+//     }
+    
+//     private int[] helper(TreeNode root) {
+//         int[] res = new int[3];
+//         if (root == null) {
+//            res[2] = 1; return res;
+//         }
+        
+//         int[] left = helper(root.left);
+//         int[] right = helper(root.right);
+//         int minLeft = Math.min(left[1], left[2]);
+//         int minRight = Math.min(right[1], right[2]);
+//         res[0] = left[1] + right[1];
+//         res[1] = Math.min(minLeft + right[2], left[2] + minRight);
+//         res[2] = Math.min(left[0], minLeft) + Math.min(right[0], minRight) + 1;
+//         return res;
+//     }
+    
+    private int res = 0;
+    
+    //Greedy
+    public int minCameraCover(TreeNode root) {
+        return (dfs(root) < 1 ? 1 : 0) + res;
+    }
+
+    public int dfs(TreeNode root) {
+        if (root == null) return 2;
+        int left = dfs(root.left), right = dfs(root.right);
+        if (left == 0 || right == 0) {
+            res++;
+            return 1;
+        }
+        return left == 1 || right == 1 ? 2 : 0;
+    }
+}
