@@ -1,0 +1,49 @@
+class Solution {
+    public int largestIsland(int[][] grid) {
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        int id = 1;
+        int max = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j]==1) {
+                    id++;
+                    int area = dfsFill(grid, i, j, id, 0);
+                    map.put(id, area);
+                    if (area > max) max = area;
+                }
+            }
+        }
+        map.put(0,0);
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j]==0) {
+                    int newArea = 1;
+                    Set<Integer> set = new HashSet<Integer>();
+                    if (i > 0) set.add(grid[i-1][j]);
+                    if (i < grid.length-1) set.add(grid[i+1][j]);
+                    if (j > 0) set.add(grid[i][j-1]);
+                    if (j < grid[0].length-1) set.add(grid[i][j+1]);
+                    for (Integer groupId : set) {
+                        newArea += map.get(groupId);
+                    }
+                    if (newArea > max) max = newArea;
+                }
+            }
+        }
+        return max;
+    }
+    
+        //DFS
+    private int dfsFill(int[][] grid,int i, int j, int id, int area){
+        if(i>=0 && j>=0 && i<grid.length && j<grid[0].length&&grid[i][j]==1){
+            grid[i][j]=id;
+            area++;
+            area = dfsFill(grid, i + 1, j, id, area);
+            area = dfsFill(grid, i - 1, j, id, area);
+            area = dfsFill(grid, i, j + 1, id, area);
+            area = dfsFill(grid, i, j - 1, id, area);
+        }
+        return area;
+    }
+    
+}
