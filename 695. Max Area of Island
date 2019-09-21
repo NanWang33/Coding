@@ -1,0 +1,62 @@
+import java.awt.Point;
+
+class Solution {
+    public int maxAreaOfIsland(int[][] grid) {
+        if (grid == null) return 0;
+
+        int max = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j]==1) {
+                    int area = dfsFill(grid, i, j, 0);
+                    if (area > max) max = area;
+                }
+            }
+        }
+        return max;
+    }
+    
+    //BFS
+    private int fill(int[][]grid, int i, int j) {
+        Queue<Point> queue = new LinkedList<Point>();
+        queue.add(new Point(i,j));
+        int area = 0;
+        grid[i][j] = 0;
+        while(!queue.isEmpty()){
+            Point cur = queue.poll();
+            area++;
+            int x = (int)cur.getX();
+            int y = (int)cur.getY();
+            if (x-1 >= 0 && grid[x-1][y] == 1){
+                queue.add(new Point(x-1, y));
+                grid[x-1][y] = 0;
+            }
+            if (x+1 < grid.length && grid[x+1][y] == 1){
+                queue.add(new Point(x+1, y));
+                grid[x+1][y] = 0;
+            } 
+            if (y-1 >= 0 && grid[x][y-1] == 1){
+                queue.add(new Point(x, y-1));
+                grid[x][y-1] = 0;
+            } 
+            if (y+1 < grid[0].length && grid[x][y+1] == 1) {
+                queue.add(new Point(x, y+1));
+                grid[x][y+1] = 0;
+            }
+        }
+        return area;
+    }
+    
+        //DFS
+    private int dfsFill(int[][] grid,int i, int j, int area){
+        if(i>=0 && j>=0 && i<grid.length && j<grid[0].length&&grid[i][j]==1){
+            grid[i][j]=0;
+            area++;
+            area = dfsFill(grid, i + 1, j, area);
+            area = dfsFill(grid, i - 1, j, area);
+            area = dfsFill(grid, i, j + 1, area);
+            area = dfsFill(grid, i, j - 1, area);
+        }
+        return area;
+    }
+}
