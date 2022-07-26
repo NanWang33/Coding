@@ -1,0 +1,120 @@
+1. Two Sum
+
+    public int[] twoSum(int[] nums, int target) {
+        // clarification: 
+        // 1. is the array sorted
+        // 2. negative integers included
+        // 3. same elemenent only use once
+        // 4. solution guaranteed
+        
+        // Space O(n), Time O(n)
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>(); // map : val -> index
+        for (int i = 0; i < nums.length; i++) {
+            int other = target - nums[i];
+            if (map.containsKey(other)) return new int[]{map.get(other), i};
+            map.put(nums[i], i);
+        }
+        return new int[2];
+    }
+    
+    
+    // Declare arrays
+    // int[] myIntArray = new int[3];
+    // int[] myIntArray = {1, 2, 3};
+    // int[] myIntArray = new int[]{1, 2, 3};
+    
+    
+    
+167. Two Sum II - Input Array Is Sorted
+
+    public int[] twoSum(int[] numbers, int target) {
+        // Two pointers, i -> first index, j -> second index
+        int i = 0;
+        int j = numbers.length - 1;
+        while (i < j) {
+            if (numbers[i] + numbers[j] < target) i++;
+            else if (numbers[i] + numbers[j] > target) j--;
+            else return new int[]{i+1, j+1};
+        }
+        
+        return null;
+    }
+    
+    // numbers[i] + numbers[j] can overflow, then use long
+    
+    
+    
+    
+170. Two Sum III - Data structure design
+
+class TwoSum {
+
+    public TwoSum() {
+        
+    }
+    
+    private Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+
+	public void add(int number) {
+	    map.put(number, map.getOrDefault(number, 0) + 1);
+	}
+
+	public boolean find(int value) {
+	    for (int num1 :map.keySet()){
+	        int num2 = value - num1;
+	        if ((num1 == num2 && map.get(num1) > 1) || (num1 != num2 && map.containsKey(num2))) return true;
+	    }
+	    return false;
+	}
+}
+// HashSet is not enough, elements can be duplicated
+
+
+
+
+653. Two Sum IV - Input is a BST
+
+class Solution {
+    TreeNode Root;    
+    public boolean findTarget(TreeNode root, int k) {
+        // search a value in BST - log(n), overall nlogn
+        if (root == null || (root.left == null && root.right == null)) return false;
+        Root = root;
+        return find(root, k);
+    }
+    
+    private boolean find(TreeNode cur, int k) {
+        if (cur == null) return false;
+        int target = k - cur.val;
+        if (search(Root, cur, target)) return true;
+        return find(cur.left, k) || find(cur.right, k);
+    }
+    
+    private boolean search(TreeNode root, TreeNode cur, int v) {
+        if (root == null) return false;
+        if (root.val == v && root != cur) return true;
+        return search(root.left, cur, v) || search(root.right, cur, v);
+    }
+}
+
+class Solution {
+ public boolean findTarget(TreeNode root, int k) {
+        List<Integer> nums = new ArrayList<>();
+        inorder(root, nums);
+        int i = 0;
+        int j = nums.size() - 1;
+        while(i<j){
+            if(nums.get(i) + nums.get(j) == k)return true;
+            if(nums.get(i) + nums.get(j) < k)i++;
+            else j--;
+        }
+        return false;
+    }
+    
+    public void inorder(TreeNode root, List<Integer> nums){
+        if(root == null) return;
+        inorder(root.left, nums);
+        nums.add(root.val);
+        inorder(root.right, nums);
+    }
+}
