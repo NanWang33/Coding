@@ -83,3 +83,117 @@ class Solution {
         return new ArrayList(res);
     }
 }
+
+
+16. 3Sum Closest
+
+class Solution {
+    public int threeSumClosest(int[] nums, int target) {
+        // clarification
+        // 1. neg included? dup included?
+        // 2. exactly one solution
+        // idea - binary search
+        // after picking i, j the first two nums, search the third one using binary search
+        // sort the input array, search third from j+1
+        // O(n^2lgn)
+        
+        Arrays.sort(nums);
+        int n = nums.length;
+        int sum = 0;
+        int diff = Integer.MAX_VALUE;
+        for (int i = 0; i < n-2; i++) {
+            if (i > 0 && nums[i] == nums[i-1]) continue; // skip dups
+            int first = nums[i];
+            for (int j = i+1; j < n-1; j++) {
+                if (j > i+1 && nums[j] == nums[j-1]) continue; // skip dups
+                int second = nums[j];
+                int t = target - first - second;
+                int third = findClosest(nums, j+1, t);
+                if (Math.abs(t - third) < diff) {
+                    diff = Math.abs(t - third);
+                    sum = first + second + third;
+                }
+            }
+        }
+        
+        return sum;
+    }
+    
+    private int findClosest(int[] nums, int start, int target) {
+        int l = start;
+        int r = nums.length;
+        while (l < r) {
+            int m = l + (r - l) / 2;
+            if (nums[m] < target) l = m + 1;
+            else r = m;
+        }
+        if (l < start) return nums[start];
+        if (l >= nums.length) return nums[l-1];
+        if (l + 1 >= nums.length) return nums[l];
+        return Math.abs(nums[l] - target) > Math.abs(nums[l+1] - target) ? nums[l+1] : nums[l];
+    }
+    
+    // two pointers O(n^2)
+    public int threeSumClosest(int[] nums, int target) {
+	    if (nums == null || nums.length < 3) return Integer.MIN_VALUE;
+ 
+	    // sort array
+	    Arrays.sort(nums);
+ 
+        int min = Integer.MAX_VALUE;
+        int closest = 0;
+        
+	    for (int i = 0; i < nums.length - 2; i++) {
+ 	        int start = i + 1;
+	        int end = nums.length - 1;
+ 	
+	        while (start < end) {
+	            int val = nums[start] + nums[end] + nums[i];
+		        if (val == target) {
+                        return target;
+		        } else if (val < target) {
+		            start++;
+	            } else {
+		            end--;
+		        }
+                if (Math.abs(val - target) < min) {
+                    min = Math.abs(val - target);
+                    closest = val;
+                }
+            }
+	    }
+    
+        return closest;
+    }
+}
+
+259. 3Sum Smaller
+
+class Solution {
+    
+    // two pointers O(n^2)
+    public int threeSumSmaller(int[] nums, int target) {
+	    if (nums == null || nums.length < 3) return 0;
+ 
+	    // sort array
+	    Arrays.sort(nums);
+        int count = 0;
+        
+	    for (int i = 0; i < nums.length - 2; i++) {
+ 	        int start = i + 1;
+	        int end = nums.length - 1;
+ 	
+	        while (start < end) {
+	            int val = nums[start] + nums[end] + nums[i];
+		        if (val < target) {
+		            count += end - start; 
+                    start++;
+	            } else {
+		            end--;
+		        }
+            }
+	    }
+    
+        return count;
+    }
+}
