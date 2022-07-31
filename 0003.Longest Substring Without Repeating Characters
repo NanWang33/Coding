@@ -1,0 +1,47 @@
+3.Longest Substring Without Repeating Characters
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        // clarification : characters contains ?
+        // maintain map : character -> its index
+        Map<Character, Integer> map = new HashMap<Character, Integer>();
+        int first = 0;
+        int res = 0;
+        int index = 0;
+        while (index < s.length()) {
+            char c = s.charAt(index);
+            if (!map.containsKey(c) || map.get(c) < first) { 
+                // any chars appear before first index should be ignored!
+                res = Math.max(res, index - first + 1);
+            } else {
+                first = map.get(c) + 1;
+            }
+            map.put(c, index);
+            index++;
+        }
+        return res;
+    }
+    
+    // build the string directly
+    public int lengthOfLongestSubstring(String s) {
+        int max = 0;
+        if (s == null || s.isEmpty()) return max;
+        
+        String cur = "";
+        int len = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (!cur.contains(""+s.charAt(i))) {
+                cur += s.charAt(i);
+                len++;
+            } else {
+                max = Math.max(max, len);
+                cur = cur.substring(cur.indexOf(s.charAt(i)) + 1) + s.charAt(i);
+                len = cur.length();
+            }
+        }
+        max = Math.max(max, len);
+        return max;
+    }
+}
+
+159. Longest Substring with At Most Two Distinct Characters
+340. Longest Substring with At Most K Distinct Characters
