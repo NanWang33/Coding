@@ -44,4 +44,47 @@ class Solution {
 }
 
 159. Longest Substring with At Most Two Distinct Characters
+
+class Solution {
+    public int lengthOfLongestSubstringTwoDistinct(String s) {
+        char char1 = ' ';
+        char char2 = ' ';
+        int index11 = 0;
+        int index12 = 0;
+        int index21 = 0;
+        int index22 = 0;
+        int len = 0;
+        int index = 0;
+        while (index < s.length()) {
+            char c = s.charAt(index);
+            if (char1 == ' ') {
+                char1 = c; index11 = index; index12 = index;
+            } else if (c == char1) {
+                index12 = index;
+            } else if (char2 == ' ') {
+                char2 = c; index21 = index; index22 = index;
+            } else if (c == char2) {
+                index22 = index;
+            } else {
+                // invalid case
+                len = Math.max(len, Math.max(index22, index12) - index11 + 1);
+                char1 = s.charAt(index - 1);
+                index12 = index-1;
+                index11 = index-1;
+                while (s.charAt(index11) == char1) index11--;
+                index11 += 1;
+                char2 = c;
+                index21 = index;
+                index22 = index;
+            }
+            index++;
+        }
+        
+        // don't forget to update len for the last time
+        len = Math.max(len, Math.max(index22, index12) - index11 + 1);
+        
+        return len;
+    }
+}
+
 340. Longest Substring with At Most K Distinct Characters
